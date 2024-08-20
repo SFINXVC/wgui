@@ -72,20 +72,21 @@ namespace wgui
 
     bool window::create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size, const vec2i& pos, DWORD style, DWORD ex_style, HWND parent)
     {
-        WNDCLASSA wc = { 0 };
-        wc.lpfnWndProc = DefWindowProcA;
-        wc.hInstance = instance;
-        wc.lpszClassName = class_name.data();
+        m_wc.lpfnWndProc = DefWindowProcA;
+        m_wc.hInstance = instance;
+        m_wc.lpszClassName = class_name.data();
 
-        if (!RegisterClassA(&wc))
+        if (!RegisterClassA(&m_wc))
             return false;
 
-        set_handle(CreateWindowExA(ex_style, class_name.data(), title.data(), style, pos.x, pos.y, size.x, size.y, parent, nullptr, instance, nullptr));
+        m_handle = CreateWindowExA(ex_style, class_name.data(), title.data(), style, pos.x, pos.y, size.x, size.y, parent, nullptr, instance, nullptr);
 
         if (!has_handle())
             return false;
 
         m_parent = parent;
+
+        SetWindowLongPtr(m_handle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
         return true;
     }

@@ -28,7 +28,12 @@ namespace wgui
 
     private:
         WNDCLASSA m_wc = { 0 };
+
+#ifdef _MSC_VER
+    public:
+        __declspec(property(get=get_title, put=set_title)) std::string Title;
     };
+#endif // _MSC_VER
 }
 
 #endif // WGUI__WINDOW_H
