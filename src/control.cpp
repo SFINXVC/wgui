@@ -64,7 +64,7 @@ namespace wgui
         return m_style;
     }
 
-    bool control::has_style(UINT style)
+    BOOL control::has_style(UINT style)
     {
         return (m_style & style) != 0;
     }
@@ -107,7 +107,7 @@ namespace wgui
         return m_style_ex;
     }
 
-    bool control::has_style_ex(UINT style)
+    BOOL control::has_style_ex(UINT style)
     {
         return (m_style_ex & style) != 0;
     }
@@ -143,14 +143,56 @@ namespace wgui
         return m_parent;
     }
 
-    bool control::has_handle() const
+    BOOL control::has_handle() const
     {
         return m_handle != nullptr;
     }
 
-    bool control::has_parent() const
+    BOOL control::has_parent() const
     {
         return m_parent != nullptr;
+    }
+
+    void control::set_enabled(BOOL state)
+    {
+        m_enabled = state;
+        EnableWindow(m_handle, m_enabled);
+    }
+
+    BOOL control::is_enabled() const
+    {
+        return m_enabled;
+    }
+
+    void control::add_control(control* child)
+    {
+        m_children.push_back(child);
+        child->set_parent(get_handle());
+    }
+
+    void control::remove_control(control* child)
+    {
+        auto it = std::find(m_children.begin(), m_children.end(), child);
+        if (it != m_children.end())
+        {
+            child->set_parent(nullptr);
+            m_children.erase(it);
+        }
+    }
+
+    std::vector<control*> control::get_children() const
+    {
+        return m_children;
+    }
+
+    void control::on_click(std::function<void()> fn)
+    {
+        m_on_click = fn;
+    }
+
+    std::function<void()> control::get_on_click()
+    {
+        return m_on_click;
     }
 
     void control::update()

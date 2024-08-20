@@ -23,21 +23,39 @@ namespace wgui
         DestroyWindow(m_handle);
     }
 
-    void window::show(int cmd_show)
+    void window::show()
     {
         if (!has_handle())
             return;
 
-        ShowWindow(m_handle, cmd_show);
+        ShowWindow(m_handle, SW_SHOW);
         update();
     }
 
-    void window::hide(int cmd_show)
+    void window::hide()
     {
         if (!has_handle())
             return;
 
-        ShowWindow(m_handle, cmd_show);
+        ShowWindow(m_handle, SW_HIDE);
+        update();
+    }
+
+    void window::minimize()
+    {
+        if (!has_handle())
+            return;
+
+        ShowWindow(m_handle, SW_MINIMIZE);
+        update();
+    }
+
+    void window::maximize()
+    {
+        if (!has_handle())
+            return;
+        
+        ShowWindow(m_handle, SW_MAXIMIZE);
         update();
     }
 
@@ -70,7 +88,12 @@ namespace wgui
         set_handle(nullptr);
     }
 
-    bool window::create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size, const vec2i& pos, DWORD style, DWORD ex_style, HWND parent)
+    void window::update()
+    {
+        UpdateWindow(m_handle);
+    }
+
+    BOOL window::create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size, const vec2i& pos, DWORD style, DWORD ex_style, HWND parent)
     {
         m_wc.lpfnWndProc = DefWindowProcA;
         m_wc.hInstance = instance;

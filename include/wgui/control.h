@@ -26,13 +26,13 @@ namespace wgui
         void set_style(UINT style);
         void remove_style(UINT style);
         UINT get_style() const;
-        bool has_style(UINT style);
+        BOOL has_style(UINT style);
         void add_style(UINT style);
 
         void set_style_ex(UINT style);
         void remove_style_ex(UINT style);
         UINT get_style_ex() const;
-        bool has_style_ex(UINT style);
+        BOOL has_style_ex(UINT style);
         void add_style_ex(UINT style);
 
         void set_handle(HWND handle);
@@ -41,14 +41,21 @@ namespace wgui
         void set_parent(HWND handle);
         HWND get_parent() const;
 
-        bool has_handle() const;
-        bool has_parent() const;
+        BOOL has_handle() const;
+        BOOL has_parent() const;
 
-        void update();
+        void set_enabled(BOOL state);
+        BOOL is_enabled() const;
+
+        void add_control(control* child);
+        void remove_control(control* child);
+        std::vector<control*> get_children() const;
 
         // events
-        void set_on_click_callback(std::function<void()> fn);
-        std::function<void()> get_on_click_callback();
+        void on_click(std::function<void()> fn);
+        std::function<void()> get_on_click();
+
+        virtual void update();
 
     protected:
         HWND m_handle = nullptr;
@@ -57,8 +64,11 @@ namespace wgui
         UINT m_style = 0;
         UINT m_style_ex = 0;
 
-    private:
+        std::vector<control*> m_children;
+
         std::function<void()> m_on_click;
+
+        BOOL m_enabled = true;
 
 #ifdef _MSC_VER
     public:
@@ -70,7 +80,7 @@ namespace wgui
         __declspec(property(get=get_parent, put=set_parent)) HWND Parent;
 
         // TODO: Fix this property stuffs
-        __declspec(property(get=get_on_click_callback, put=set_on_click_callback)) std::function<void()> OnClick;
+        __declspec(property(get=get_on_click, put=on_click)) std::function<void()> OnClick;
 #endif // _MSC_VER
     };
 }

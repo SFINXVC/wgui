@@ -16,15 +16,18 @@ namespace wgui
         window(HINSTANCE instance, std::string_view class_name, std::string_view title);
         ~window();
 
-        void show(int cmd_show = SW_SHOW);
-        void hide(int cmd_show = SW_HIDE);
+        void show();
+        void hide();
+        void minimize();
+        void maximize();
 
         void set_title(std::string_view title);
         std::string get_title() const;
 
         void close();
+        void update() override;
 
-        bool create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size = { CW_USEDEFAULT, CW_USEDEFAULT }, const vec2i& pos = { CW_USEDEFAULT, CW_USEDEFAULT }, DWORD style = WS_OVERLAPPEDWINDOW, DWORD ex_style = 0, HWND parent = nullptr);
+        BOOL create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size = { CW_USEDEFAULT, CW_USEDEFAULT }, const vec2i& pos = { CW_USEDEFAULT, CW_USEDEFAULT }, DWORD style = WS_OVERLAPPEDWINDOW, DWORD ex_style = 0, HWND parent = nullptr);
 
     private:
         WNDCLASSA m_wc = { 0 };
