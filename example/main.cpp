@@ -1,8 +1,7 @@
 #include <wgui/window.h>
 #include <wgui/button.h>
-#include <winuser.h>
 
-#include <wgui/utils/messagebox.h> 
+#include <wgui/utils/display.h>
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -21,14 +20,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     
     btn.OnClick = []() -> void
     {
-        wgui::messagebox msgbox;
-        msgbox.show("Clicked the btn!", "You've touched the button, now it's not virgin anymore!.\nHow about you trying to touch another one?");
+        printf("Button clicked!\n");
     };
+
+    const wgui::vec2i screen_size = wgui::display::get_size();
+    printf("detected screen size: %dx%d\n", screen_size.x, screen_size.y);
+    printf("there are %d childrens inside the window\n", (int)window.get_children().size());
 
     int i = 0;
     for (const auto& child : window.get_children())
     {
-        printf("[%d]: %p", i, (void*)child);
+        printf("[%d]: 0x%p @ %zu", i, (void*)child, sizeof(*child));
         ++i;
     }
 
