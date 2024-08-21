@@ -93,6 +93,36 @@ namespace wgui
         UpdateWindow(m_handle);
     }
 
+    void window::on_destroy(std::function<void(control*)> fn)
+    {
+        m_on_destroy = fn;
+    }
+
+    std::function<void(control*)> window::get_on_destroy()
+    {
+        return m_on_destroy;
+    }
+
+    void window::on_create(std::function<void(control*)> fn)
+    {
+        m_on_create = fn;
+    }
+
+    std::function<void(control*)> window::get_on_create()
+    {
+        return m_on_create;
+    }
+
+    void window::on_close(std::function<void(control*)> fn)
+    {
+        m_on_close = fn;
+    }
+
+    std::function<void(control*)> window::get_on_close()
+    {
+        return m_on_close;
+    }
+
     bool window::create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size, const vec2i& pos, DWORD style, DWORD ex_style, HWND parent)
     {
         m_wc.lpfnWndProc = DefWindowProcA;
@@ -112,5 +142,10 @@ namespace wgui
         SetWindowLongPtr(m_handle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
 
         return true;
+    }
+
+    LRESULT CALLBACK window::window_procedure(HWND hwnd, UINT msg, WPARAM w_param, LPARAM l_param)
+    {
+        
     }
 }

@@ -164,13 +164,13 @@ namespace wgui
         return m_enabled;
     }
 
-    void control::add_control(control* child)
+    void control::add_children(control* child)
     {
         m_children.push_back(child);
         child->set_parent(get_handle());
     }
 
-    void control::remove_control(control* child)
+    void control::remove_children(control* child)
     {
         auto it = std::find(m_children.begin(), m_children.end(), child);
         if (it != m_children.end())

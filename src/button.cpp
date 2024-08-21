@@ -6,11 +6,6 @@ namespace wgui
 {
     button::button(control* parent, std::string_view text)
     {
-        create(parent->get_handle(), text);
-    }
-
-    button::button(HWND parent, std::string_view text)
-    {
         create(parent, text);
     }
 
@@ -27,15 +22,18 @@ namespace wgui
         return text;
     }
 
-    bool button::create(HWND parent, std::string_view text)
+    bool button::create(control* parent, std::string_view text)
     {
+        if (!parent->has_handle())
+            return false;
+        
         m_handle = CreateWindowEx(
             0,
             "BUTTON",
             text.data(),
             WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
             0, 0, 0, 0,
-            parent,
+            parent->get_handle(),
             NULL,
             GetModuleHandle(NULL),
             NULL
@@ -45,6 +43,8 @@ namespace wgui
             return false;
 
         SetWindowText(m_handle, text.data());
+
+        parent->add_children(this);
 
         return true;
     }

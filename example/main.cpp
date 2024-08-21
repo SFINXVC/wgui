@@ -2,10 +2,19 @@
 #include <wgui/button.h>
 #include <winuser.h>
 
-#include <wgui/utils/messagebox.h>
+#include <wgui/utils/messagebox.h> 
 
-int main()
+int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+    // alloc a console window for debugging and stuff, for example
+    AllocConsole();
+
+    FILE* fp;
+    freopen_s(&fp, "CONOUT$", "w", stdout);
+    freopen_s(&fp, "CONOUT$", "w", stderr);
+
+    printf("Hello There!\n");
+
     wgui::window window("wgui_example", "wgui example window");
 
     wgui::button btn(&window, "Hello World");
@@ -16,7 +25,12 @@ int main()
         msgbox.show("Clicked the btn!", "You've touched the button, now it's not virgin anymore!.\nHow about you trying to touch another one?");
     };
 
-    window.add_control(&btn);
+    int i = 0;
+    for (const auto& child : window.get_children())
+    {
+        printf("[%d]: %p", i, (void*)child);
+        ++i;
+    }
 
 #ifdef _MSC_VER
     btn.Position = {4, 4};

@@ -47,8 +47,8 @@ namespace wgui
         void set_enabled(bool state);
         bool is_enabled() const;
 
-        void add_control(control* child);
-        void remove_control(control* child);
+        void add_children(control* child);
+        void remove_children(control* child);
         std::vector<control*> get_children() const;
 
         // events
