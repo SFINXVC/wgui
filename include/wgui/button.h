@@ -16,7 +16,7 @@ namespace wgui
         void set_text(std::string_view text);
         std::string get_text() const;
     
-        BOOL create(HWND parent, std::string_view text);
+        bool create(HWND parent, std::string_view text);
     };
 }
 

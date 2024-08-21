@@ -1,13 +1,22 @@
-#include <iostream>
-
 #include <wgui/window.h>
 #include <wgui/button.h>
+#include <winuser.h>
+
+#include <wgui/utils/messagebox.h>
 
 int main()
 {
     wgui::window window("wgui_example", "wgui example window");
 
     wgui::button btn(&window, "Hello World");
+    
+    btn.OnClick = []() -> void
+    {
+        wgui::messagebox msgbox;
+        msgbox.show("Clicked the btn!", "You've touched the button, now it's not virgin anymore!.\nHow about you trying to touch another one?");
+    };
+
+    window.add_control(&btn);
 
 #ifdef _MSC_VER
     btn.Position = {4, 4};

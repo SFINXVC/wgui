@@ -1,5 +1,5 @@
-#ifndef WGUI__UTILS_H
-#define WGUI__UTILS_H
+#ifndef WGUI__UTILS__VEC2I_H
+#define WGUI__UTILS__VEC2I_H
 
 namespace wgui
 {
@@ -71,4 +71,4 @@ namespace wgui
     };
 }
 
-#endif // WGUI__UTILS_H
+#endif // WGUI__UTILS__VEC2I_H

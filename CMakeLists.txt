@@ -12,6 +12,6 @@ file(GLOB SOURCE_FILES
 add_library(wgui ${SOURCE_FILES})
 
 target_include_directories(wgui PUBLIC include)
-target_include_directories(wgui PRIVATE include/wgui)
+target_include_directories(wgui PRIVATE include/wgui include/wgui/utils)
 
 add_subdirectory(example)

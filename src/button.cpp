@@ -27,7 +27,7 @@ namespace wgui
         return text;
     }
 
-    BOOL button::create(HWND parent, std::string_view text)
+    bool button::create(HWND parent, std::string_view text)
     {
         m_handle = CreateWindowEx(
             0,
@@ -42,10 +42,10 @@ namespace wgui
         );
 
         if (!m_handle)
-            return FALSE;
+            return false;
 
         SetWindowText(m_handle, text.data());
 
-        return TRUE;
+        return true;
     }
 }

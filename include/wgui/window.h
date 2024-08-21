@@ -2,7 +2,7 @@
 #define WGUI__WINDOW_H
 
 #include "control.h"
-#include "utils.h"
+#include "utils/vec2i.h"
 
 #include <string_view>
 #include <winuser.h>
@@ -27,7 +27,7 @@ namespace wgui
         void close();
         void update() override;
 
-        BOOL create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size = { CW_USEDEFAULT, CW_USEDEFAULT }, const vec2i& pos = { CW_USEDEFAULT, CW_USEDEFAULT }, DWORD style = WS_OVERLAPPEDWINDOW, DWORD ex_style = 0, HWND parent = nullptr);
+        bool create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size = { CW_USEDEFAULT, CW_USEDEFAULT }, const vec2i& pos = { CW_USEDEFAULT, CW_USEDEFAULT }, DWORD style = WS_OVERLAPPEDWINDOW, DWORD ex_style = 0, HWND parent = nullptr);
 
     private:
         WNDCLASSA m_wc = { 0 };

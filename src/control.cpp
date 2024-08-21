@@ -64,7 +64,7 @@ namespace wgui
         return m_style;
     }
 
-    BOOL control::has_style(UINT style)
+    bool control::has_style(UINT style)
     {
         return (m_style & style) != 0;
     }
@@ -107,7 +107,7 @@ namespace wgui
         return m_style_ex;
     }
 
-    BOOL control::has_style_ex(UINT style)
+    bool control::has_style_ex(UINT style)
     {
         return (m_style_ex & style) != 0;
     }
@@ -143,23 +143,23 @@ namespace wgui
         return m_parent;
     }
 
-    BOOL control::has_handle() const
+    bool control::has_handle() const
     {
         return m_handle != nullptr;
     }
 
-    BOOL control::has_parent() const
+    bool control::has_parent() const
     {
         return m_parent != nullptr;
     }
 
-    void control::set_enabled(BOOL state)
+    void control::set_enabled(bool state)
     {
         m_enabled = state;
         EnableWindow(m_handle, m_enabled);
     }
 
-    BOOL control::is_enabled() const
+    bool control::is_enabled() const
     {
         return m_enabled;
     }

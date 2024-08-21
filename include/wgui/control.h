@@ -7,7 +7,7 @@
 #include <functional>
 #include <string_view>
 
-#include "utils.h"
+#include "utils/vec2i.h"
 
 namespace wgui
 {
@@ -26,13 +26,13 @@ namespace wgui
         void set_style(UINT style);
         void remove_style(UINT style);
         UINT get_style() const;
-        BOOL has_style(UINT style);
+        bool has_style(UINT style);
         void add_style(UINT style);
 
         void set_style_ex(UINT style);
         void remove_style_ex(UINT style);
         UINT get_style_ex() const;
-        BOOL has_style_ex(UINT style);
+        bool has_style_ex(UINT style);
         void add_style_ex(UINT style);
 
         void set_handle(HWND handle);
@@ -41,11 +41,11 @@ namespace wgui
         void set_parent(HWND handle);
         HWND get_parent() const;
 
-        BOOL has_handle() const;
-        BOOL has_parent() const;
+        bool has_handle() const;
+        bool has_parent() const;
 
-        void set_enabled(BOOL state);
-        BOOL is_enabled() const;
+        void set_enabled(bool state);
+        bool is_enabled() const;
 
         void add_control(control* child);
         void remove_control(control* child);
@@ -68,7 +68,7 @@ namespace wgui
 
         std::function<void()> m_on_click;
 
-        BOOL m_enabled = true;
+        bool m_enabled = true;
 
 #ifdef _MSC_VER
     public:

@@ -93,7 +93,7 @@ namespace wgui
         UpdateWindow(m_handle);
     }
 
-    BOOL window::create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size, const vec2i& pos, DWORD style, DWORD ex_style, HWND parent)
+    bool window::create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size, const vec2i& pos, DWORD style, DWORD ex_style, HWND parent)
     {
         m_wc.lpfnWndProc = DefWindowProcA;
         m_wc.hInstance = instance;
