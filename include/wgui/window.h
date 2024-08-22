@@ -44,7 +44,7 @@ namespace wgui
         static LRESULT CALLBACK window_procedure(HWND hwnd, UINT msg, WPARAM w_param, LPARAM l_param);
 
     private:
-        WNDCLASSA m_wc = { 0 };
+        WNDCLASSEX m_wc = { 0 };
 
         std::function<void(control*)> m_on_destroy;
         std::function<void(control*)> m_on_create;

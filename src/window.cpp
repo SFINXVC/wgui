@@ -125,16 +125,21 @@ namespace wgui
 
     bool window::create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size, const vec2i& pos, DWORD style, DWORD ex_style, HWND parent)
     {
-        m_wc.lpfnWndProc = DefWindowProcA;
+        ZeroMemory(&m_wc, sizeof(m_wc));
+
+        m_wc.cbSize = sizeof(WNDCLASSEX);
+        m_wc.lpfnWndProc = window_procedure;
         m_wc.hInstance = instance;
+        m_wc.style = CS_HREDRAW | CS_VREDRAW;
+        m_wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
         m_wc.lpszClassName = class_name.data();
 
-        if (!RegisterClassA(&m_wc))
+        if (!RegisterClassEx(&m_wc))
             return false;
 
-        m_handle = CreateWindowExA(ex_style, class_name.data(), title.data(), style, pos.x, pos.y, size.x, size.y, parent, nullptr, instance, nullptr);
+        m_handle = CreateWindowEx(ex_style, class_name.data(), title.data(), style, pos.x, pos.y, size.x, size.y, parent, nullptr, instance, nullptr);
 
-        if (!has_handle())
+        if (!m_handle)
             return false;
 
         m_parent = parent;
@@ -146,6 +151,40 @@ namespace wgui
 
     LRESULT CALLBACK window::window_procedure(HWND hwnd, UINT msg, WPARAM w_param, LPARAM l_param)
     {
-        
+        window* w_ptr = reinterpret_cast<window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+       
+        switch (msg)
+        {
+            case WM_CREATE:
+            {
+                if (w_ptr && w_ptr->get_on_create())
+                    w_ptr->get_on_create()(w_ptr);
+
+                break;
+            }
+            case WM_DESTROY:
+            {
+                if (w_ptr && w_ptr->get_on_destroy())
+                    w_ptr->get_on_destroy()(w_ptr);
+
+                PostQuitMessage(0);
+
+                break;
+            }
+            case WM_CLOSE:
+            {
+                if (w_ptr && w_ptr->get_on_destroy())
+                    w_ptr->get_on_destroy()(w_ptr);
+
+                if (w_ptr->has_handle())
+                    DestroyWindow(w_ptr->get_handle());
+
+                break;
+            }
+            default:
+                return DefWindowProcA(hwnd, msg, w_param, l_param);
+        }
+
+        return 0;
     }
 }
