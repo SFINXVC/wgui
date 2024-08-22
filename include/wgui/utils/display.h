@@ -13,7 +13,7 @@ namespace wgui
     public:
         static vec2i get_size()
         {
-            return vec2i(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CXSCREEN));
+            return vec2i(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
         }
 
         static vec2i get_center()

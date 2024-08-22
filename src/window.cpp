@@ -1,5 +1,6 @@
 #include "window.h"
 
+#include <cstdio>
 #include <libloaderapi.h>
 #include <winuser.h>
 
@@ -113,12 +114,12 @@ namespace wgui
         return m_on_create;
     }
 
-    void window::on_close(std::function<void(control*)> fn)
+    void window::on_close(std::function<bool(control*)> fn)
     {
         m_on_close = fn;
     }
 
-    std::function<void(control*)> window::get_on_close()
+    std::function<bool(control*)> window::get_on_close()
     {
         return m_on_close;
     }
@@ -151,33 +152,40 @@ namespace wgui
 
     LRESULT CALLBACK window::window_procedure(HWND hwnd, UINT msg, WPARAM w_param, LPARAM l_param)
     {
-        window* w_ptr = reinterpret_cast<window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-       
+
         switch (msg)
         {
             case WM_CREATE:
             {
-                if (w_ptr && w_ptr->get_on_create())
+                window* w_ptr = reinterpret_cast<window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+                if (w_ptr)
                     w_ptr->get_on_create()(w_ptr);
-
-                break;
-            }
-            case WM_DESTROY:
-            {
-                if (w_ptr && w_ptr->get_on_destroy())
-                    w_ptr->get_on_destroy()(w_ptr);
-
-                PostQuitMessage(0);
 
                 break;
             }
             case WM_CLOSE:
             {
-                if (w_ptr && w_ptr->get_on_destroy())
+                window* w_ptr = reinterpret_cast<window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+                
+                bool res = true;
+
+                if (w_ptr)
+                    res = w_ptr->get_on_close()(w_ptr);
+
+                if (res && w_ptr->has_handle())
+                    DestroyWindow(w_ptr->get_handle());
+
+                break;
+            }
+            case WM_DESTROY:
+            {
+                window* w_ptr = reinterpret_cast<window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+                if (w_ptr)
                     w_ptr->get_on_destroy()(w_ptr);
 
-                if (w_ptr->has_handle())
-                    DestroyWindow(w_ptr->get_handle());
+                PostQuitMessage(0);
 
                 break;
             }

@@ -3,6 +3,7 @@
 #include <wgui/utils/vec2i.h>
 
 #include <wgui/utils/display.h>
+#include <winuser.h>
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -16,6 +17,24 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     printf("Hello There!\n");
 
     wgui::window window("wgui_example", "wgui example window");
+
+    window.OnDestroy = [](wgui::control* ctrl) -> void
+    {
+        MessageBox(ctrl->get_handle(), "Received window OnDestroy event!", "Alert!", MB_OK | MB_ICONINFORMATION);
+    };
+
+    window.OnClose = [](wgui::control* ctrl) -> bool
+    {
+        int response = MessageBox(ctrl->get_handle(), "Are you sure you want to exit?", "Confirm Exit", MB_YESNO | MB_ICONQUESTION);
+        if (response == IDNO)
+            return false;
+        else if (response == IDYES)
+            return true;
+        else
+            MessageBox(ctrl->get_handle(), "Unknown response ID for msgbox", "Error", MB_OK | MB_ICONERROR);
+
+        return true;
+    };
 
     wgui::button btn(&window, "Hello World");
     wgui::button btn2(&window, "Im probably fine?");
@@ -47,8 +66,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     btn2.Position = btn.Position + wgui::vec2i(btn.Size.x, 0) + wgui::vec2i(4, 0);
     printf("BTN2 POS AFTER: {%d, %d}\n", btn2.Position.x, btn2.Position.y);
     btn2.Size = {150, 45};
-    window.Position = {0, 0};
     window.Size = {800, 600};
+
+    window.Position = wgui::vec2i(
+        (screen_size.x - window.Size.x) / 2,
+        (screen_size.y - window.Size.y) / 2
+    );
+
+    printf("btw, the window position is at: { %d, %d }\n", window.Position.x, window.Position.y);
 
     window.Title = "Something";
 #else

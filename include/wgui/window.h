@@ -34,8 +34,8 @@ namespace wgui
         void on_create(std::function<void(control*)> fn);
         std::function<void(control*)> get_on_create();
         
-        void on_close(std::function<void(control*)> fn);
-        std::function<void(control*)> get_on_close();
+        void on_close(std::function<bool(control*)> fn);
+        std::function<bool(control*)> get_on_close();
         // -------------------------------------------------
 
         bool create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size = { CW_USEDEFAULT, CW_USEDEFAULT }, const vec2i& pos = { CW_USEDEFAULT, CW_USEDEFAULT }, DWORD style = WS_OVERLAPPEDWINDOW, DWORD ex_style = 0, HWND parent = nullptr);
@@ -48,11 +48,15 @@ namespace wgui
 
         std::function<void(control*)> m_on_destroy;
         std::function<void(control*)> m_on_create;
-        std::function<void(control*)> m_on_close;
+        std::function<bool(control*)> m_on_close;
 
 #ifdef _MSC_VER
     public:
         __declspec(property(get=get_title, put=set_title)) std::string Title;
+
+        __declspec(property(get=get_on_destroy, put=on_destroy)) std::function<void(control*)> OnCreate;
+        __declspec(property(get=get_on_close, put=on_close)) std::function<bool(control*)> OnClose;
+        __declspec(property(get=get_on_destroy, put=on_destroy)) std::function<void(control*)> OnDestroy;
     };
 #endif // _MSC_VER
 }
