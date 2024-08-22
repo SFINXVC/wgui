@@ -22,12 +22,12 @@ namespace wgui
         return vec2i{ rect.right - rect.left, rect.bottom - rect.top };
     }
 
-    void control::set_pos(const vec2i& size)
+    void control::set_pos(const vec2i& pos)
     {
         if (!has_handle())
             return;
 
-        SetWindowPos(m_handle, nullptr, size.x, size.y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
+        SetWindowPos(m_handle, nullptr, pos.x, pos.y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
     }
 
     vec2i control::get_pos() const
@@ -38,7 +38,13 @@ namespace wgui
         RECT rect;
         GetWindowRect(m_handle, &rect);
 
-        return { rect.left, rect.top };
+        POINT pt;
+        pt.x = rect.left;
+        pt.y = rect.top;
+
+        MapWindowPoints(nullptr, m_parent, &pt, 1);
+
+        return { pt.x, pt.y };
     }
 
     void control::set_style(UINT style)

@@ -1,5 +1,6 @@
 #include <wgui/window.h>
 #include <wgui/button.h>
+#include <wgui/utils/vec2i.h>
 
 #include <wgui/utils/display.h>
 
@@ -17,6 +18,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     wgui::window window("wgui_example", "wgui example window");
 
     wgui::button btn(&window, "Hello World");
+    wgui::button btn2(&window, "Im probably fine?");
     
     btn.OnClick = []() -> void
     {
@@ -30,14 +32,21 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     int i = 0;
     for (const auto& child : window.get_children())
     {
-        printf("[%d]: 0x%p @ %zu", i, (void*)child, sizeof(*child));
+        printf("[%d]: 0x%p @ %zu\n", i, (void*)child, sizeof(*child));
         ++i;
     }
 
 #ifdef _MSC_VER
     btn.Position = {4, 4};
     btn.Size = {150, 45};
-    
+
+    printf("BTN POS AFTER: {%d, %d}\n", btn.Position.x, btn.Position.y);
+    printf("BTN2 POS BEFORE: {%d, %d}\n", btn2.Position.x, btn2.Position.y);
+
+    // test calc
+    btn2.Position = btn.Position + wgui::vec2i(btn.Size.x, 0) + wgui::vec2i(4, 0);
+    printf("BTN2 POS AFTER: {%d, %d}\n", btn2.Position.x, btn2.Position.y);
+    btn2.Size = {150, 45};
     window.Position = {0, 0};
     window.Size = {800, 600};
 
