@@ -125,7 +125,7 @@ namespace wgui
 
     bool window::create(HINSTANCE instance, std::string_view class_name, std::string_view title, const vec2i& size, const vec2i& pos, DWORD style, DWORD ex_style, HWND parent)
     {
-        ZeroMemory(&m_wc, sizeof(m_wc));
+        ZeroMemory(&m_wc, sizeof(WNDCLASSEX));
 
         m_wc.cbSize = sizeof(WNDCLASSEX);
         m_wc.lpfnWndProc = window_procedure;
