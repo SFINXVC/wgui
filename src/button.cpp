@@ -9,6 +9,11 @@ namespace wgui
         create(parent, text);
     }
 
+    button::button(int id, control* parent, std::string_view text)
+    {
+        // TODO: Write the ids, (kinda lazy to code rn)
+    }
+
     void button::set_text(std::string_view text)
     {
         SetWindowText(m_handle, text.data());
@@ -22,7 +27,7 @@ namespace wgui
         return text;
     }
 
-    bool button::create(control* parent, std::string_view text)
+    bool button::create(control* parent, std::string_view text, int id)
     {
         if (!parent->has_handle())
             return false;
@@ -34,7 +39,7 @@ namespace wgui
             WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
             0, 0, 0, 0,
             parent->get_handle(),
-            NULL,
+            (HMENU)&id,
             GetModuleHandle(NULL),
             NULL
         );

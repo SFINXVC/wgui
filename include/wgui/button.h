@@ -11,11 +11,12 @@ namespace wgui
     {
     public:
         button(control* parent, std::string_view text);
+        button(int id, control* parent, std::string_view text);
 
         void set_text(std::string_view text);
         std::string get_text() const;
     
-        bool create(control* parent, std::string_view text);
+        bool create(control* parent, std::string_view text, int id = 0);
     };
 }
 

@@ -6,6 +6,7 @@ project(wgui VERSION 0.1 DESCRIPTION "A Library for Native UI Development Using 
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB SOURCE_FILES
     src/*.cpp

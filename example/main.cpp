@@ -26,6 +26,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     window.OnClose = [](wgui::control* ctrl) -> bool
     {
         int response = MessageBox(ctrl->get_handle(), "Are you sure you want to exit?", "Confirm Exit", MB_YESNO | MB_ICONQUESTION);
+        
         if (response == IDNO)
             return false;
         else if (response == IDYES)
@@ -59,12 +60,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     btn.Position = {4, 4};
     btn.Size = {150, 45};
 
-    printf("BTN POS AFTER: {%d, %d}\n", btn.Position.x, btn.Position.y);
-    printf("BTN2 POS BEFORE: {%d, %d}\n", btn2.Position.x, btn2.Position.y);
-
     // test calc
     btn2.Position = btn.Position + wgui::vec2i(btn.Size.x, 0) + wgui::vec2i(4, 0);
-    printf("BTN2 POS AFTER: {%d, %d}\n", btn2.Position.x, btn2.Position.y);
     btn2.Size = {150, 45};
     window.Size = {800, 600};
 
@@ -72,8 +69,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
         (screen_size.x - window.Size.x) / 2,
         (screen_size.y - window.Size.y) / 2
     );
-
-    printf("btw, the window position is at: { %d, %d }\n", window.Position.x, window.Position.y);
 
     window.Title = "Something";
 #else

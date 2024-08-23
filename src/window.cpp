@@ -1,6 +1,5 @@
 #include "window.h"
 
-#include <cstdio>
 #include <libloaderapi.h>
 #include <winuser.h>
 
@@ -152,14 +151,13 @@ namespace wgui
 
     LRESULT CALLBACK window::window_procedure(HWND hwnd, UINT msg, WPARAM w_param, LPARAM l_param)
     {
-
         switch (msg)
         {
             case WM_CREATE:
             {
                 window* w_ptr = reinterpret_cast<window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
-                if (w_ptr)
+                if (w_ptr && w_ptr->get_on_create())
                     w_ptr->get_on_create()(w_ptr);
 
                 break;
@@ -170,7 +168,7 @@ namespace wgui
                 
                 bool res = true;
 
-                if (w_ptr)
+                if (w_ptr && w_ptr->get_on_close())
                     res = w_ptr->get_on_close()(w_ptr);
 
                 if (res && w_ptr->has_handle())
@@ -182,10 +180,27 @@ namespace wgui
             {
                 window* w_ptr = reinterpret_cast<window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
-                if (w_ptr)
+                if (w_ptr && w_ptr->get_on_destroy())
                     w_ptr->get_on_destroy()(w_ptr);
 
                 PostQuitMessage(0);
+
+                break;
+            }
+            case WM_COMMAND:
+            {
+                window* w_ptr = reinterpret_cast<window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+                if (w_ptr && !w_ptr->get_children().empty())
+                {
+                    for (const auto & i : w_ptr->get_children())
+                    {
+                        if (i->get_on_click())
+                        {
+                            i->get_on_click()();
+                        }
+                    }     
+                }
 
                 break;
             }
