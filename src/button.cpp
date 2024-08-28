@@ -27,7 +27,7 @@ namespace wgui
         return text;
     }
 
-    bool button::create(control* parent, std::string_view text, int id)
+    bool button::create(control* parent, std::string_view text)
     {
         if (!parent->has_handle())
             return false;
@@ -39,7 +39,7 @@ namespace wgui
             WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
             0, 0, 0, 0,
             parent->get_handle(),
-            (HMENU)&id,
+            (HMENU)parent->get_next_id(),
             GetModuleHandle(NULL),
             NULL
         );
