@@ -57,12 +57,18 @@ namespace wgui
 
         virtual void update();
 
+        size_t get_id() const;
+        size_t get_next_id();
+        void set_id(const size_t id);
+
     protected:
         HWND m_handle = nullptr;
         HWND m_parent = nullptr;
 
         UINT m_style = 0;
         UINT m_style_ex = 0;
+
+        size_t m_id = 0;
 
         std::vector<control*> m_children;
 

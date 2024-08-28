@@ -44,6 +44,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     {
         printf("Button clicked!\n");
     };
+    
+    btn2.OnClick = []() -> void
+    {
+        printf("Other button clicked!\n");
+    };
 
     const wgui::vec2i screen_size = wgui::display::get_size();
     printf("detected screen size: %dx%d\n", screen_size.x, screen_size.y);

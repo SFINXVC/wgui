@@ -208,4 +208,16 @@ namespace wgui
         
         SetWindowPos(m_handle, nullptr, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
     }
+
+    size_t control::get_id() const {
+        return m_id;
+    }
+
+    size_t control::get_next_id() {
+        return m_id++;
+    }
+
+    void control::set_id(const size_t id) {
+        m_id = id;
+    }
 }

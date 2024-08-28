@@ -195,6 +195,10 @@ namespace wgui
                 {
                     for (const auto & i : w_ptr->get_children())
                     {
+                        HMENU menu = GetMenu(i->get_handle());
+                        if (LOWORD(w_param) != LOWORD(menu))
+                            continue;
+                        
                         if (i->get_on_click())
                         {
                             i->get_on_click()();
