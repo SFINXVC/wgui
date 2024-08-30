@@ -30,6 +30,8 @@ namespace wgui
 
         ShowWindow(m_handle, SW_SHOW);
         update();
+
+        g_windows_created++;
     }
 
     void window::hide()
@@ -172,13 +174,21 @@ namespace wgui
                     res = w_ptr->get_on_close()(w_ptr);
 
                 if (res && w_ptr->has_handle())
+                {
                     DestroyWindow(w_ptr->get_handle());
+                    g_windows_created--;
+                }
 
                 break;
             }
             case WM_DESTROY:
             {
                 window* w_ptr = reinterpret_cast<window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+
+                printf("window count: %d\n", g_windows_created);
+
+                if (g_windows_created > 1)
+                    break;
 
                 if (w_ptr && w_ptr->get_on_destroy())
                     w_ptr->get_on_destroy()(w_ptr);
@@ -191,19 +201,21 @@ namespace wgui
             {
                 window* w_ptr = reinterpret_cast<window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
 
-                if (w_ptr && !w_ptr->get_children().empty())
+                if (!w_ptr)
+                    break;
+
+                if (w_ptr->get_children().empty())
+                    break;
+
+                for (const auto & i : w_ptr->get_children())
                 {
-                    for (const auto & i : w_ptr->get_children())
-                    {
-                        HMENU menu = GetMenu(i->get_handle());
-                        if (LOWORD(w_param) != LOWORD(menu))
-                            continue;
-                        
-                        if (i->get_on_click())
-                        {
-                            i->get_on_click()();
-                        }
-                    }     
+                    HMENU menu = GetMenu(i->get_handle());
+
+                    if (LOWORD(w_param) != LOWORD(menu))
+                        continue;
+                    
+                    if (i->get_on_click())
+                        i->get_on_click()();
                 }
 
                 break;

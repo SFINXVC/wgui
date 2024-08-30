@@ -9,6 +9,8 @@
 
 namespace wgui
 {
+    static int g_windows_created = 0;
+    
     class window : public control
     {
     public:

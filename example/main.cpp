@@ -3,6 +3,7 @@
 #include <wgui/utils/vec2i.h>
 
 #include <wgui/utils/display.h>
+#include <winnt.h>
 #include <winuser.h>
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -17,6 +18,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     printf("Hello There!\n");
 
     wgui::window window("wgui_example", "wgui example window");
+    wgui::window window2("wgui-example", "Another window test");
+
+    window2.OnDestroy = [](wgui::control* ctrl) -> void
+    {
+        MessageBox(ctrl->get_handle(), "Received window2 OnDestroy event!", "Alert!", MB_OK | MB_ICONINFORMATION);
+    };
 
     window.OnDestroy = [](wgui::control* ctrl) -> void
     {
@@ -39,14 +46,21 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
     wgui::button btn(&window, "Hello World");
     wgui::button btn2(&window, "Im probably fine?");
+
+    window.OnClick = []() -> void
+    {
+        printf("test\n");
+    };
     
     btn.OnClick = []() -> void
     {
+        MessageBox(NULL, "Button clicked!", "Alert!", MB_OK | MB_ICONINFORMATION);
         printf("Button clicked!\n");
     };
     
     btn2.OnClick = []() -> void
     {
+        MessageBox(NULL, "Other button clicked!", "Alert!", MB_OK | MB_ICONINFORMATION);
         printf("Other button clicked!\n");
     };
 
@@ -86,6 +100,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     window.set_title("Something");
 #endif
 
+    window2.show();
     window.show();
 
     // TODO: MOVE THIS LOOP SHIT TO ANOTHER PLACE, COULD BE ANYWHERE BUT NOT HERE!
